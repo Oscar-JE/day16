@@ -2,13 +2,14 @@ package parse
 
 import (
 	"bufio"
+	"day16/input"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func ParseFile(filePath string) []Input {
-	inputs := []Input{}
+func ParseFile(filePath string) []input.Input {
+	inputs := []input.Input{}
 	reader, err := os.Open(filePath)
 	if err != nil {
 		panic("Error opening file")
@@ -22,16 +23,16 @@ func ParseFile(filePath string) []Input {
 	return inputs
 }
 
-func parseLine(line string) Input {
+func parseLine(line string) input.Input {
 	valveAndConnectionStrings := strings.Split(line, ";")
 	valveLine := valveAndConnectionStrings[0]
 	connectionsLine := valveAndConnectionStrings[1]
 	valve := parseValve(valveLine)
 	connections := parseConnections(connectionsLine)
-	return Input{Valve: valve, Connections: connections}
+	return input.Input{Valve: valve, Connections: connections}
 }
 
-func parseValve(line string) Valve {
+func parseValve(line string) input.Valve {
 	line = strings.Trim(line, " ")
 	words := strings.Split(line, " ")
 	name := words[1]
@@ -41,7 +42,7 @@ func parseValve(line string) Valve {
 	if parseError != nil {
 		panic("convert to int error")
 	}
-	return Valve{Name: name, Rate: rate}
+	return input.Valve{Name: name, Rate: rate}
 }
 
 func parseConnections(line string) []string {

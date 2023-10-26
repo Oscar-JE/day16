@@ -1,4 +1,4 @@
-package parse
+package input
 
 type Input struct {
 	Valve       Valve
