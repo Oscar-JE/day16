@@ -12,3 +12,12 @@ func TestParseLine(t *testing.T) {
 		t.Errorf("Incorrect input parsing")
 	}
 }
+
+func TestParseLineGG(t *testing.T) {
+	inLine := "Valve HH has flow rate=22; tunnel leads to valve GG"
+	expectedInput := InitInput("HH", 22, []string{"GG"})
+	actual := parseLine(inLine)
+	if !actual.Eq(expectedInput) {
+		t.Errorf("Incorrect input parsing")
+	}
+}

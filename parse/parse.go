@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func parseFiel(filePath string) []Input {
+func ParseFile(filePath string) []Input {
 	inputs := []Input{}
 	reader, err := os.Open(filePath)
 	if err != nil {
@@ -45,7 +45,18 @@ func parseValve(line string) Valve {
 }
 
 func parseConnections(line string) []string {
-	names := strings.Trim(strings.Split(line, "valves")[1], " ")
-	splittedNames := strings.Split(names, ", ")
+	spliter := "valve"
+	if strings.Contains(line, "valves") {
+		spliter = "valves"
+	}
+	names := strings.Split(line, spliter)[1]
+	names = strings.Trim(names, " ")
+	splittedNames := []string{}
+	if strings.Contains(names, ", ") {
+		splittedNames = strings.Split(names, ", ")
+	} else {
+		splittedNames = append(splittedNames, strings.Trim(names, " "))
+	}
+
 	return splittedNames
 }
