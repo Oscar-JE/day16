@@ -9,15 +9,13 @@ type State struct {
 
 func InitState(inputs []input.Input) State {
 	rooms := []Room{}
-	for _, input := range inputs {
-		valve := Valve{name: input.Valve.Name, rate: input.Valve.Rate}
-		room := Room{valve: valve, connectIndexes: []int{}}
+	for _, inputEl := range inputs {
+		valve := Valve{name: inputEl.Valve.Name, rate: inputEl.Valve.Rate}
+		connections := input.FindIndexes(inputEl.Connections, inputs)
+		room := Room{valve: valve, connectIndexes: connections}
 		rooms = append(rooms, room)
 	}
-	for i := range inputs {
-
-	}
-	agentPosition := 0
+	agentPosition := input.FindIndex("AA", inputs)
 	return State{agentPosition: agentPosition, rooms: rooms}
 }
 
@@ -27,8 +25,4 @@ func (s State) Reward() int {
 		r += room.valve.reward()
 	}
 	return r
-}
-
-func (s State) nextPossiblePositions() []int {
-	return []int{}
 }

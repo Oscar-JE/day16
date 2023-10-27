@@ -5,6 +5,10 @@ type Room struct {
 	connectIndexes []int
 }
 
+func (r *Room) SetConnectIndexes(indexes []int) {
+	r.connectIndexes = indexes
+}
+
 type Valve struct {
 	name string
 	rate int
