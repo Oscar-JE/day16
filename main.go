@@ -8,8 +8,12 @@ import (
 
 func main() {
 	inputs := parse.ParseFile("input_short.txt")
-	state := state.InitState(inputs)
-	fmt.Println(inputs)
-	fmt.Println(state)
+	s := state.InitState(inputs)
+	fmt.Println(s)
+	println("next states")
+	nextStates := state.NextPossibleStates(s)
+	for _, el := range nextStates {
+		fmt.Println(el)
+	}
 
 }
