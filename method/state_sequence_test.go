@@ -13,7 +13,7 @@ func TestTotalReward(t *testing.T) {
 	s1.SetPosition("BB")
 	s2 := s1.DeepCopy()
 	s2.SetValve("BB", true)
-	p := Path{[]state.State{s0, s1, s2}}
+	p := StateSequence{[]state.State{s0, s1, s2}}
 	reward := p.TotalReward()
 	if reward != 1 {
 		t.Errorf("reward not wath we expected")
