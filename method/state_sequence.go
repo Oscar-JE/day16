@@ -11,16 +11,23 @@ func TotalReward(stateSequnce []state.State) int {
 	return total
 }
 
-type StateSequnces struct {
+type StateSequences struct {
 	stateSequence []state.State
 	hasNext       bool
 }
 
-func (itr StateSequnces) HasNext() bool {
+func InitSequence(start state.State, length int) StateSequences {
+	stateSeq := []state.State{start}
+	for i := 1 ; i < length ; i++ {
+			
+	}
+}
+
+func (itr StateSequences) HasNext() bool {
 	return itr.hasNext
 }
 
-func (itr *StateSequnces) GetNext() []state.State {
+func (itr *StateSequences) GetNext() []state.State {
 
 	retPath := SequenceCopy(itr.stateSequence)
 	itr.increment()
@@ -35,7 +42,7 @@ func SequenceCopy(states []state.State) []state.State {
 	return copy
 }
 
-func (itr *StateSequnces) increment() {
+func (itr *StateSequences) increment() {
 	index := itr.indexToIncrement()
 	if index == 0 {
 		itr.hasNext = false
@@ -48,7 +55,7 @@ func (itr *StateSequnces) increment() {
 	itr.setToZeroAfterIndex(index)
 }
 
-func (itr StateSequnces) indexToIncrement() int {
+func (itr StateSequences) indexToIncrement() int {
 	for i := len(itr.stateSequence) - 1; i > 0; i-- {
 		parent := itr.stateSequence[i-1]
 		connected := state.NextPossibleStates(parent)
@@ -61,7 +68,7 @@ func (itr StateSequnces) indexToIncrement() int {
 	return 0
 }
 
-func (itr *StateSequnces) setToZeroAfterIndex(index int) {
+func (itr *StateSequences) setToZeroAfterIndex(index int) {
 	for i := index + 1; i < len(itr.stateSequence); i++ {
 		parent := itr.stateSequence[i-1]
 		itr.stateSequence[i] = state.NextPossibleStates(parent)[0]
