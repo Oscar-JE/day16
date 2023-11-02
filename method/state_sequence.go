@@ -36,10 +36,43 @@ func SequenceCopy(states []state.State) []state.State {
 }
 
 func (itr *StateSequnces) increment() {
-	last := false
+	index := itr.indexToIncrement()
+	if index == 0 {
+		itr.hasNext = false
+		return
+	}
+	parent := itr.stateSequence[index-1]
+	possibleNext := state.NextPossibleStates(parent)
+	child := itr.stateSequence[index]
+	itr.stateSequence[index] = possibleNext[indexOf(child, possibleNext)+1]
+	itr.setToZeroAfterIndex(index)
+}
+
+func (itr StateSequnces) indexToIncrement() int {
 	for i := len(itr.stateSequence) - 1; i > 0; i-- {
 		parent := itr.stateSequence[i-1]
-		connected := state.NextPossiblePossition(parent)
-		child := 
+		connected := state.NextPossibleStates(parent)
+		child := itr.stateSequence[i]
+		indexOfchild := indexOf(child, connected)
+		if indexOfchild != len(connected)-1 {
+			return i
+		}
 	}
+	return 0
+}
+
+func (itr *StateSequnces) setToZeroAfterIndex(index int) {
+	for i := index + 1; i < len(itr.stateSequence); i++ {
+		parent := itr.stateSequence[i-1]
+		itr.stateSequence[i] = state.NextPossibleStates(parent)[0]
+	}
+}
+
+func indexOf(element state.State, states []state.State) int {
+	for i := range states {
+		if states[i].Eq(element) {
+			return i
+		}
+	}
+	return -1
 }
