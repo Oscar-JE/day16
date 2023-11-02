@@ -1,10 +1,65 @@
-Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
-Valve BB has flow rate=13; tunnels lead to valves CC, AA
-Valve CC has flow rate=2; tunnels lead to valves DD, BB
-Valve DD has flow rate=20; tunnels lead to valves CC, AA, EE
-Valve EE has flow rate=3; tunnels lead to valves FF, DD
-Valve FF has flow rate=0; tunnels lead to valves EE, GG
-Valve GG has flow rate=0; tunnels lead to valves FF, HH
-Valve HH has flow rate=22; tunnel leads to valve GG
-Valve II has flow rate=0; tunnels lead to valves AA, JJ
-Valve JJ has flow rate=21; tunnel leads to valve II
+flowchart TD
+    AA --> DD
+    AA --> II
+    AA --> BB
+    BB --> CC
+    BB --> AA
+    CC --> BB
+    CC --> DD
+    DD --> CC
+    DD --> AA
+    DD --> EE
+    EE --> FF
+    EE --> DD
+    FF --> EE
+    FF --> GG
+    GG --> FF
+    GG --> HH
+    HH --> GG
+    II --> JJ
+    II --> AA
+    JJ --> II
+    AA --> AA*
+
+nodes = hashMap<nodeId, nodeInfo>
+
+nodeInfo: {
+    nodeId = AA
+    neighbours = [DD, II, BB, AA*]
+}
+
+
+nodeInfo: {
+    nodeId = AA*
+    neighbours = [...]
+    num_neighbours = [DD, II, BB, AA*]
+}
+
+        0   1    2   3   4    5
+path = [
+    {RR, activated_pipes=[0,0,1,1,1,0,1,0,1,0,1,0]}, 
+    {BB, activated_pipes=[0,0,1,1,1,0,1,0,1,0,1,0]}, 
+    {CC, activated_pipes=[0,0,1,1,1,0,1,0,1,0,1,0]}, 
+    {CC*, activated_pipes=[0,0,1,1,1,0,1,0,1,0,1,0]}, 
+    {DD, activated_pipes=[0,0,1,1,1,0,1,0,1,0,1,0]}, 
+    {AA, activated_pipes=[0,0,1,1,1,0,1,0,1,0,1,0]}, 
+]
+
+
+state = {
+    position = TT
+    påsatta valv
+
+}
+
+
+
+0000000000012
+activate_
+
+next_path(path) {
+    for (i = 29; i > 0; i--) {
+        state[i-1].possibleNext()
+        
+    }
+}

@@ -19,3 +19,17 @@ func TestTotalReward(t *testing.T) {
 		t.Errorf("reward not wath we expected")
 	}
 }
+
+func TestStateIterator(t *testing.T) {
+	inputs := []input.Input{input.InitInput("AA", 0, []string{"BB"}), input.InitInput("BB", 1, []string{"AA"})}
+	s := state.InitState(inputs)
+	iter := InitSequence(s, 2)
+	nrOfSeq := 0
+	for iter.HasNext() {
+		iter.GetNext()
+		nrOfSeq += 1
+	}
+	if nrOfSeq != 2 {
+		t.Errorf("wrong number of possible sequence")
+	}
+}

@@ -16,3 +16,10 @@ func ArrayEqual(a []int, b []int) bool {
 func PowerOfTwo(exponet int) int {
 	return int(math.Pow(2.0, float64(exponet)))
 }
+
+func Max(a int, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}

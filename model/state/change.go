@@ -12,7 +12,9 @@ func NextPossibleStates(sIn State) []State {
 
 func NextPossiblePossition(state State) []int {
 	possibleNextPositions := []int{}
-	possibleNextPositions = append(possibleNextPositions, state.agentPosition)
+	if !state.rooms[state.agentPosition].valve.open && state.rooms[state.agentPosition].valve.rate != 0 {
+		possibleNextPositions = append(possibleNextPositions, state.agentPosition)
+	}
 	connectedRooms := state.rooms[state.agentPosition].connectIndexes
 	possibleNextPositions = append(possibleNextPositions, connectedRooms...)
 	return possibleNextPositions

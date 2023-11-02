@@ -11,6 +11,10 @@ func TotalReward(stateSequnce []state.State) int {
 	return total
 }
 
+// logiken om att undvika loopar bör ligga i state sequence
+// är detta en bra ide ?
+// tar den imorgon
+
 type StateSequences struct {
 	stateSequence []state.State
 	hasNext       bool
@@ -18,9 +22,10 @@ type StateSequences struct {
 
 func InitSequence(start state.State, length int) StateSequences {
 	stateSeq := []state.State{start}
-	for i := 1 ; i < length ; i++ {
-			
+	for i := 1; i < length; i++ {
+		stateSeq = append(stateSeq, state.NextPossibleStates(start)[0])
 	}
+	return StateSequences{stateSequence: stateSeq, hasNext: true}
 }
 
 func (itr StateSequences) HasNext() bool {
