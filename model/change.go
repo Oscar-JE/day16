@@ -1,4 +1,4 @@
-package state
+package model
 
 func NextPossibleStates(sIn State) []State {
 	nextStates := []State{}

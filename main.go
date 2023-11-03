@@ -3,16 +3,16 @@ package main
 import (
 	"day16/intopr"
 	"day16/method"
-	"day16/model/state"
+	model "day16/model"
 	"day16/parse"
 	"fmt"
 	"time"
 )
 
 func main() {
-	inputs := parse.ParseFile("input.txt")
-	start := state.InitState(inputs)
-	iter := method.InitSequence(start, 19)
+	inputs := parse.ParseFile("input_short.txt")
+	start := model.InitState(inputs)
+	iter := method.InitSequence(start, 30)
 	startTime := time.Now()
 	maximum := 0
 	for iter.HasNext() {

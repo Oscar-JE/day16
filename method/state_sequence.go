@@ -1,8 +1,8 @@
 package method
 
-import "day16/model/state"
+import model "day16/model"
 
-func TotalReward(stateSequnce []state.State) int {
+func TotalReward(stateSequnce []model.State) int {
 	total := 0
 	for i := range stateSequnce {
 		state := stateSequnce[i]
@@ -11,25 +11,21 @@ func TotalReward(stateSequnce []state.State) int {
 	return total
 }
 
-// logiken om att undvika loopar bör ligga i state sequence
-// är detta en bra ide ?
-// tar den imorgon
-
 type StateSequence struct {
-	sequence []state.State
+	sequence []model.State
 }
 
-func (s StateSequence) Get(index int) state.State { // todo flytta innehålet i state paketet till model
+func (s StateSequence) Get(index int) model.State {
 	return s.sequence[index]
 }
 
-func (s StateSequence) getLast() state.State {
+func (s StateSequence) getLast() model.State {
 	return s.sequence[len(s.sequence)-1]
 }
 
-func (s StateSequence) NextPossibleStates() []state.State {
-	nextStates := state.NextPossibleStates(s.getLast())
-	nextPossibleStates := []state.State{}
+func (s StateSequence) NextPossibleStates() []model.State {
+	nextStates := model.NextPossibleStates(s.getLast())
+	nextPossibleStates := []model.State{}
 	for i := range nextStates {
 		if !s.AlreadyVisited(nextStates[i]) {
 			nextPossibleStates = append(nextPossibleStates, nextStates[i])
@@ -41,7 +37,7 @@ func (s StateSequence) NextPossibleStates() []state.State {
 	return nextPossibleStates
 }
 
-func (s StateSequence) AlreadyVisited(nextState state.State) bool {
+func (s StateSequence) AlreadyVisited(nextState model.State) bool {
 	for i := range s.sequence {
 		if s.sequence[i].Eq(nextState) {
 			return true
@@ -66,61 +62,14 @@ func (s StateSequence) indexToIncrement() int {
 	return 0
 }
 
-func (itr *StateSequences) setToZeroAfterIndex(index int) {
+func (itr *SequenceIter) setToZeroAfterIndex(index int) {
 	for i := index + 1; i < len(itr.stateSequence.sequence); i++ {
 		subSeq := itr.stateSequence.SubSequence(i - 1)
 		itr.stateSequence.sequence[i] = subSeq.NextPossibleStates()[0]
 	}
 }
 
-/// ______________________
-
-type StateSequences struct {
-	stateSequence StateSequence
-	hasNext       bool
-}
-
-func InitSequence(start state.State, length int) StateSequences {
-	stateSeq := []state.State{start}
-	for i := 1; i < length; i++ {
-		stateSeq = append(stateSeq, state.NextPossibleStates(start)[0])
-	}
-	return StateSequences{stateSequence: StateSequence{stateSeq}, hasNext: true}
-}
-
-func (itr StateSequences) HasNext() bool {
-	return itr.hasNext
-}
-
-func (itr *StateSequences) GetNext() []state.State {
-
-	retPath := SequenceCopy(itr.stateSequence.sequence)
-	itr.increment()
-	return retPath
-}
-
-func SequenceCopy(states []state.State) []state.State {
-	copy := []state.State{}
-	for i := range states {
-		copy = append(copy, states[i].DeepCopy())
-	}
-	return copy
-}
-
-func (itr *StateSequences) increment() {
-	index := itr.stateSequence.indexToIncrement()
-	if index == 0 {
-		itr.hasNext = false
-		return
-	}
-	subSeq := itr.stateSequence.SubSequence(index - 1) // off by one ?
-	possibleNext := subSeq.NextPossibleStates()
-	child := itr.stateSequence.Get(index)
-	itr.stateSequence.sequence[index] = possibleNext[indexOf(child, possibleNext)+1]
-	itr.setToZeroAfterIndex(index)
-}
-
-func indexOf(element state.State, states []state.State) int {
+func indexOf(element model.State, states []model.State) int {
 	for i := range states {
 		if states[i].Eq(element) {
 			return i
