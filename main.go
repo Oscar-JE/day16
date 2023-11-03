@@ -10,9 +10,9 @@ import (
 )
 
 func main() {
-	inputs := parse.ParseFile("input_short.txt")
+	inputs := parse.ParseFile("input.txt")
 	start := state.InitState(inputs)
-	iter := method.InitSequence(start, 15)
+	iter := method.InitSequence(start, 19)
 	startTime := time.Now()
 	maximum := 0
 	for iter.HasNext() {

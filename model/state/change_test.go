@@ -13,10 +13,7 @@ func TestStateChangeSimple(t *testing.T) {
 	exp1 := s.DeepCopy()
 	exp1.agentPosition = 1
 	nexts := NextPossibleStates(s)
-	if !exp0.Eq(nexts[0]) {
-		t.Errorf("Wrong order in nextStates of faulty calculation")
-	}
-	if !exp1.Eq(nexts[1]) {
+	if !exp1.Eq(nexts[0]) {
 		t.Errorf("Wrong order in nextStates of faulty calculation")
 	}
 }

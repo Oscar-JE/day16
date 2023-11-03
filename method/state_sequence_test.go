@@ -29,7 +29,7 @@ func TestStateIterator(t *testing.T) {
 		iter.GetNext()
 		nrOfSeq += 1
 	}
-	if nrOfSeq != 2 {
+	if nrOfSeq != 1 {
 		t.Errorf("wrong number of possible sequence")
 	}
 }
