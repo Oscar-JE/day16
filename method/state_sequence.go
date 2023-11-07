@@ -49,18 +49,6 @@ func (s StateSequence) SubSequence(index int) StateSequence {
 	return StateSequence{s.sequence[0 : index+1]}
 }
 
-func (s StateSequence) indexToIncrement() int {
-	for i := len(s.sequence) - 1; i > 0; i-- {
-		subSeq := s.SubSequence(i - 1)
-		connected := subSeq.NextPossibleStates()
-		child := s.sequence[i]
-		indexOfchild := indexOf(child, connected)
-		if indexOfchild != len(connected)-1 {
-			return i
-		}
-	}
-	return 0
-}
 
 func (itr *SequenceIter) setToZeroAfterIndex(index int) {
 	for i := index + 1; i < len(itr.stateSequence.sequence); i++ {

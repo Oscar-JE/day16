@@ -3,16 +3,17 @@ package method
 import model "day16/model"
 
 type SequenceIter struct {
-	stateSequence StateSequence
-	hasNext       bool
+	stateSequence     StateSequence
+	hasNext           bool
+	intermediateValue int
 }
 
-func InitSequence(start model.State, length int) SequenceIter {
+func InitSequenceItr(start model.State, length int) SequenceIter {
 	stateSeq := []model.State{start}
 	for i := 1; i < length; i++ {
 		stateSeq = append(stateSeq, model.NextPossibleStates(start)[0])
 	}
-	return SequenceIter{stateSequence: StateSequence{stateSeq}, hasNext: true}
+	return SequenceIter{stateSequence: StateSequence{stateSeq}, hasNext: true, intermediateValue: 0}
 }
 
 func (itr SequenceIter) HasNext() bool {
@@ -35,7 +36,7 @@ func SequenceCopy(states []model.State) []model.State {
 }
 
 func (itr *SequenceIter) increment() {
-	index := itr.stateSequence.indexToIncrement()
+	index := indexToIncrement(itr.stateSequence)
 	if index == 0 {
 		itr.hasNext = false
 		return
@@ -45,4 +46,17 @@ func (itr *SequenceIter) increment() {
 	child := itr.stateSequence.Get(index)
 	itr.stateSequence.sequence[index] = possibleNext[indexOf(child, possibleNext)+1]
 	itr.setToZeroAfterIndex(index)
+}
+
+func indexToIncrement(s StateSequence) int { // är detta verkligen den här klassens ansvar? Nej det är itrs ansvar
+	for i := len(s.sequence) - 1; i > 0; i-- {
+		subSeq := s.SubSequence(i - 1)
+		connected := subSeq.NextPossibleStates()
+		child := s.sequence[i]
+		indexOfchild := indexOf(child, connected)
+		if indexOfchild != len(connected)-1 {
+			return i
+		}
+	}
+	return 0
 }

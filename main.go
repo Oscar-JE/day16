@@ -12,7 +12,7 @@ import (
 func main() {
 	inputs := parse.ParseFile("input_short.txt")
 	start := model.InitState(inputs)
-	iter := method.InitSequence(start, 30)
+	iter := method.InitSequenceItr(start, 30)
 	startTime := time.Now()
 	maximum := 0
 	for iter.HasNext() {
